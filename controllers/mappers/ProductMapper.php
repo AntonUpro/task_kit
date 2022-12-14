@@ -38,7 +38,7 @@ class ProductMapper
         foreach ($data as $product) {
             foreach (self::VARIABLE_PRODUCT as $item) {
                 if (!isset($product[$item])) {
-                    throw new \Exception("not found variable `$item` in product `$product`");
+                    throw new \Exception("not found variable `$item`");
                 }
             }
             $dataResponse[] = new Product(

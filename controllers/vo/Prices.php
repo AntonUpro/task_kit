@@ -10,7 +10,7 @@ class Prices implements \JsonSerializable
 {
     private array $prices;
 
-    public function __construct(...$prices)
+    public function __construct(Price ...$prices)
     {
         $this->prices = $prices;
     }

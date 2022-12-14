@@ -19,16 +19,18 @@ class m221212_173314_CreateTablesProductPriceRegion extends Migration
         $this->createTable(self::TABLE_REGION, [
             'id' => $this->primaryKey(),
             'region' => $this->string()->notNull(),
-            'created_at' => $this->dateTime(),
+            'created_at' => $this->dateTime()->defaultValue('NOW()'),
             'updated_at' => $this->dateTime()->defaultValue('NOW()')
         ]);
 
         $this->createTable(self::TABLE_PRODUCT, [
             'id' => $this->primaryKey(),
             'product' => $this->string()->notNull(),
-            'created_at' => $this->dateTime(),
+            'created_at' => $this->dateTime()->defaultValue('NOW()'),
             'updated_at' => $this->dateTime()->defaultValue('NOW()')
         ]);
+
+        $this->createIndex('idx_table_product_id', self::TABLE_PRODUCT, 'id');
 
         $this->createTable(self::TABLE_PRICE, [
             'id' => $this->primaryKey(),
@@ -37,9 +39,11 @@ class m221212_173314_CreateTablesProductPriceRegion extends Migration
             'price_purchase' => $this->float(2)->notNull(),
             'price_selling' => $this->float(2)->notNull(),
             'price_discount' => $this->float(2)->notNull(),
-            'created_at' => $this->dateTime(),
+            'created_at' => $this->dateTime()->defaultValue('NOW()'),
             'updated_at' => $this->dateTime()->defaultValue('NOW()')
         ]);
+
+        $this->createIndex('idx_table_price_id_product', self::TABLE_PRICE, 'id_product');
 
         $this->addForeignKey(
             'FK_price_region',
@@ -61,7 +65,6 @@ class m221212_173314_CreateTablesProductPriceRegion extends Migration
             'CASCADE'
         );
 
-
     }
 
     /**
@@ -71,7 +74,9 @@ class m221212_173314_CreateTablesProductPriceRegion extends Migration
     {
         $this->dropForeignKey('FK_price_product', self::TABLE_PRICE);
         $this->dropForeignKey('FK_price_region', self::TABLE_PRICE);
+        $this->dropIndex('idx_table_price_id_product', self::TABLE_PRICE);
         $this->dropTable(self::TABLE_PRICE);
+        $this->dropIndex('idx_table_product_id', self::TABLE_PRODUCT);
         $this->dropTable(self::TABLE_PRODUCT);
         $this->dropTable(self::TABLE_REGION);
     }
